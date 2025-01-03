@@ -11,47 +11,60 @@ module.exports = {
   registerSchool: async (req, res) => {
     try {
       const form = new formidable.IncomingForm();
+
       form.parse(req, async (err, fields, files) => {
         // Check if the image file is provided
-        if (
-          !files.image ||
-          !Array.isArray(files.image) ||
-          files.image.length === 0
-        ) {
+        // if (
+        //   !files.image ||
+        //   !Array.isArray(files.image) ||
+        //   files.image.length === 0
+        // ) {
+        //   return res;
+        //   console
+        //     .log("Hello here")
+        //     .status(400)
+        //     .json({ success: false, message: "Image file is required" });
+        // }
+        const school = await School.findOne({ email: fields.email[0] });
+        if (school) {
           return res
-            .status(400)
-            .json({ success: false, message: "Image file is required" });
+            .status(409)
+            .json({ success: false, message: "Email is already registered" });
+        } else {
+          const photo = files.image[0];
+          let filepath = photo.filepath;
+          let originalFilename = photo.originalFilename.replace(" ", "_");
+          let newPath = path.join(
+            __dirname,
+            process.env.SCHOOL_IMAGE_PATH,
+            originalFilename
+          );
+
+          console.log("new path", newPath);
+
+          console.log("read file path", filepath);
+          let photoData = fs.readFileSync(filepath);
+          console.log(photoData);
+          fs.writeFileSync(newPath, photoData);
+
+          const salt = bcrypt.genSaltSync(10);
+          const hashPassword = bcrypt.hashSync(fields.password[0], salt);
+
+          const newSchool = new School({
+            school_name: fields.school_name[0],
+            email: fields.email[0],
+            owner_name: fields.owner_name[0],
+            password: hashPassword,
+            school_image: originalFilename,
+          });
+
+          const savedSchool = await newSchool.save();
+          res.status(200).json({
+            success: true,
+            data: savedSchool,
+            message: "School is Registered Successfully",
+          });
         }
-
-        const photo = files.image[0];
-        let filepath = photo.filepath;
-        let originalFilename = photo.originalFilename.replace(" ", "_");
-        let newPath = path.join(
-          __dirname,
-          process.env.SCHOOL_IMAGE_PATH,
-          originalFilename
-        );
-
-        let photoData = fs.readFileSync(filepath);
-        fs.writeFileSync(newPath, photoData);
-
-        const salt = bcrypt.genSaltSync(10);
-        const hashPassword = bcrypt.hashSync(fields.password[0], salt);
-
-        const newSchool = new School({
-          school_name: fields.school_name[0],
-          email: fields.email[0],
-          owner_name: fields.owner_name[0],
-          password: hashPassword,
-          school_image:newPath
-        });
-
-        const savedSchool = await newSchool.save();
-        res.status(200).json({
-          success: true,
-          data: savedSchool,
-          message: "School is Registered Successfully",
-        });
       });
     } catch (error) {
       res
