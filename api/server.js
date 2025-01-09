@@ -8,10 +8,16 @@ const cookieParser = require("cookie-parser");
 const schoolRouter = require("./routers/school.router");
 
 const app = express();
-app.use(cors());
+
+const corsOption = {
+  exposedHeaders: "Authorization"
+};
+app.use(cors(corsOption));
 app.use(cookieParser());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+
 
 // mongoose connection
 mongoose

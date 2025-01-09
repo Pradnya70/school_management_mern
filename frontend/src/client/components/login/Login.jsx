@@ -17,9 +17,20 @@ export default function Login() {
     validationSchema: LoginSchema,
     onSubmit: (values) => {
       axios
-        .post(`http://localhost:5000/api/school/login`, {...values})
+        .post(`http://localhost:5000/api/school/login`, { ...values })
         .then((resp) => {
-          console.log(resp);
+
+          // console.log(resp.headers["authorization"]);
+          console.log(resp.headers["authorization"])
+
+          const token = resp.headers.get("Authorization");
+          if(token){
+            localStorage.setItem("token",token)
+          }
+          const user = resp.data.user;
+          if(user){
+            localStorage.setItem("user",JSON.stringify(user))
+          }
           setMessage(resp.data.message);
           setMessageType("success");
           Formik.resetForm();

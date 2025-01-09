@@ -97,6 +97,8 @@ module.exports = {
           );
 
           res.header("Authorization", token);
+          // res.setHeader("Authorization", token);
+          // console.log(token);
 
           res.status(200).json({
             success: true,
@@ -140,7 +142,7 @@ module.exports = {
       ]);
       res.status(200).json({
         success: true,
-        message: "success in fetching all school",
+        message: "success in fetching all schools",
         schools,
       });
     } catch (error) {
