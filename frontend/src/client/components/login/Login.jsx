@@ -6,8 +6,13 @@ import { LoginSchema } from "../../../yupSchema/LoginSchema";
 import { Button, Typography, CardMedia } from "@mui/material";
 import axios from "axios";
 import MessageSnackbar from "../../../basic utility components/snackbar/MessageSnackbar";
+import { AuthContext } from "../../../context/AuthContext";
+import { useNavigate } from "react-router-dom";
 
 export default function Login() {
+      const navigate= useNavigate();
+      const {login}= React.useContext(AuthContext)
+  
   const initialValues = {
     email: "",
     password: "",
@@ -30,10 +35,13 @@ export default function Login() {
           const user = resp.data.user;
           if(user){
             localStorage.setItem("user",JSON.stringify(user))
+            login(user);
           }
           setMessage(resp.data.message);
           setMessageType("success");
           Formik.resetForm();
+          navigate("/school");
+
         })
         .catch((e) => {
           setMessage(e.response.data.message);
@@ -57,6 +65,7 @@ export default function Login() {
         backgroundSize: "cover",
         backgroundRepeat: "no-repeat",
         height: "100%",
+        minHeight: "80vh",
         paddingTop: "60px",
         paddingBottom: "60px",
       }}
@@ -68,12 +77,7 @@ export default function Login() {
           handleClose={handleMessageClose}
         />
       )}
-      <Typography
-        variant="h2"
-        sx={{ textAlign: "center", paddingBottom: "10px" }}
-      >
-        Login
-      </Typography>
+
       <Box
         component="form"
         sx={{
@@ -89,6 +93,12 @@ export default function Login() {
         autoComplete="off"
         onSubmit={Formik.handleSubmit}
       >
+              <Typography
+        variant="h2"
+        sx={{ textAlign: "center" }}
+      >
+        Login
+      </Typography>
         <TextField
           name="email"
           label="Email"

@@ -81,7 +81,7 @@ export default function Register() {
   {message &&
     <MessageSnackbar message={message} type={messageType} handleClose={handleMessageClose}  />
   }
-  <Typography variant="h2" sx={{textAlign:"center", paddingBottom:"10px"}}>Register</Typography>
+  
     <Box
       component="form"
       sx={{
@@ -97,6 +97,7 @@ export default function Register() {
       autoComplete="off"
       onSubmit={Formik.handleSubmit}
     >
+      <Typography variant="h2" sx={{textAlign:"center"}}>Register</Typography>
       <Typography>Add School Picture</Typography>
 
       <TextField

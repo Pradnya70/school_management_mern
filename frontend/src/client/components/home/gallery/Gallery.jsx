@@ -44,6 +44,7 @@ React.useEffect(()=>{
 
   return (
     <Box>
+      <Typography variant='h4' sx={{textAlign:"center", marginTop:"40px", marginBottom:"20px"}} >Registered Schools</Typography>
     <ImageList sx={{ width: '100%', height: 'auto' }}>
       {schools.map((school) => (
         <ImageListItem key={school.school_image}>
@@ -73,8 +74,8 @@ console.log(`./images/uploaded/school/${school.school_image}`)
         aria-describedby="modal-modal-description"
        
       >
-        <Box component={'div'}  sx={{postion:'absolute',top:'50%',left:'50%', transform:'translate(-50%,-50%)',
-            //  background:'#fff',
+        <Box component={'div'}  sx={{position:'absolute',top:'50%',left:'50%', transform:'translate(-50%,-50%)',
+              background:'#fff',
             padding:'10px',
             border:'none',
             outline:'none'
