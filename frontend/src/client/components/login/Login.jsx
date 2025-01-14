@@ -2,7 +2,7 @@ import * as React from "react";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import { useFormik } from "formik";
-import { LoginSchema } from "../../../yupSchema/LoginSchema";
+import { loginSchema } from "../../../yupSchema/loginSchema";
 import { Button, Typography, CardMedia } from "@mui/material";
 import axios from "axios";
 import MessageSnackbar from "../../../basic utility components/snackbar/MessageSnackbar";
@@ -19,7 +19,7 @@ export default function Login() {
   };
   const Formik = useFormik({
     initialValues,
-    validationSchema: LoginSchema,
+    validationSchema: loginSchema,
     onSubmit: (values) => {
       axios
         .post(`http://localhost:5000/api/school/login`, { ...values })

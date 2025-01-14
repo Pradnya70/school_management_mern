@@ -7,6 +7,8 @@ const cookieParser = require("cookie-parser");
 //Routers import
 const schoolRouter = require("./routers/school.router");
 const classRouter = require("./routers/class.router")
+const subjectRouter = require("./routers/subject.router")
+
 const app = express();
 
 const corsOption = {
@@ -32,6 +34,9 @@ mongoose
 //Routers
 app.use("/api/school", schoolRouter);
 app.use("/api/class",classRouter)
+app.use("/api/subject",subjectRouter)
+
+
 
 const PORT = process.env.PORT;
 app.listen(PORT, () => {

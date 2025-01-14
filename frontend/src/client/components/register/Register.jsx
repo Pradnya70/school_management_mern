@@ -2,7 +2,7 @@ import * as React from "react";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import { useFormik } from "formik";
-import { RegisterSchema } from "../../../yupSchema/RegisterSchema";
+import { registerSchema } from "../../../yupSchema/registerSchema";
 import { Button, Typography,CardMedia } from "@mui/material";
 import axios from "axios";
 import MessageSnackbar from "../../../basic utility components/snackbar/MessageSnackbar";
@@ -37,7 +37,7 @@ export default function Register() {
   };
   const Formik = useFormik({
     initialValues,
-    validationSchema: RegisterSchema,
+    validationSchema: registerSchema,
     onSubmit: (values) => {
       console.log("Register submit values", values);
       const fd = new FormData();
