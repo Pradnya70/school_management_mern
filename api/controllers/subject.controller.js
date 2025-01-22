@@ -9,7 +9,10 @@ module.exports = {
   getAllSubjects: async (req, res) => {
     try {
       const schoolId = req.user.schoolId;
-      const allSubjects = await Subject.find({ schoolId });
+      console.log("in function");
+      console.log(schoolId);
+      const allSubjects = await Subject.find({ school: schoolId });
+      console.log(allSubjects);
       res.status(200).json({
         success: true,
         message: "Success in fetching all Subjects",
@@ -25,7 +28,6 @@ module.exports = {
 
   createSubject: async (req, res) => {
     try {
-
       const newSubject = new Subject({
         school: req.user.schoolId,
         subject_name: req.body.subject_name,

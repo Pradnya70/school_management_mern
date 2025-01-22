@@ -9,7 +9,7 @@ module.exports = {
   getAllClasses: async (req, res) => {
     try {
       const schoolId = req.user.schoolId;
-      const allClasses = await Class.find({ schoolId });
+      const allClasses = await Class.find({ school: schoolId });
       res.status(200).json({
         success: true,
         message: "Success in fetching all classes",

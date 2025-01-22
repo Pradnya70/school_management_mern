@@ -34,6 +34,11 @@ module.exports = {
           const photo = files.image[0];
           let filepath = photo.filepath;
           let originalFilename = photo.originalFilename.replace(" ", "_");
+          console.log(
+            "process.env.SCHOOL_IMAGE_PATH",
+            process.env.SCHOOL_IMAGE_PATH
+          );
+          console.log("originalFilename", originalFilename);
           let newPath = path.join(
             __dirname,
             process.env.SCHOOL_IMAGE_PATH,
@@ -87,7 +92,7 @@ module.exports = {
           const token = jwt.sign(
             {
               id: school._id,
-              schooId: school._id,
+              schoolId: school._id,
               owner_name: school.owner_name,
               school_name: school.school_name,
               image_url: school.school_image,
@@ -156,7 +161,7 @@ module.exports = {
   getSchoolOwnData: async (req, res) => {
     try {
       const id = req.user.id;
-      const school = await School.findOne({ _id: id }).select(['-password'])
+      const school = await School.findOne({ _id: id }).select(["-password"]);
 
       if (school) {
         res.status(200).json({ success: true, school });
@@ -206,23 +211,41 @@ module.exports = {
 
           Object.keys(fields).forEach((field) => {
             school[field] = fields[field][0];
-          })
-          school['school_image']=originalFilename
-          
-        }else{
-          school['school_name']=fields.school_name[0]
+          });
+          school["school_image"] = originalFilename;
+        } else {
+          school["school_name"] = fields.school_name[0];
         }
         await school.save();
-          res.status(200).json({
-            success: true,
-            message: "School updated successfully.",
-            school,
-          });
+        res.status(200).json({
+          success: true,
+          message: "School updated successfully.",
+          school,
+        });
       });
     } catch (error) {
       res
         .status(500)
         .json({ success: false, message: "School Registration Failed" });
+    }
+  },
+
+  deleteStudentWithId: async (req, res) => {
+    try {
+      const id = req.params.id;
+      const schoolId = req.user.schoolId;
+      await this.deleteStudentWithId.findOneAndDelete({
+        _id: id,
+        school: schoolId,
+      });
+      const students = student.find({ school: schoolId });
+      res.status(200).json({
+        success: true,
+        message: "Student deleted successfully.",
+        students,
+      });
+    } catch (error) {
+      res.status(500).json({ success: false, message: "School Delete Failed" });
     }
   },
 };
