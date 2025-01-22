@@ -96,7 +96,9 @@ if(edit){
    }
 
    useEffect(()=>{
+    console.log('hello')
      fetchAllsubjects();
+
    },[message])
 
     return (
