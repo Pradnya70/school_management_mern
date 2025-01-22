@@ -45,6 +45,7 @@ module.exports = {
             originalFilename
           );
 
+          console.log("Creating image path");
           console.log("new path", newPath);
 
           console.log("read file path", filepath);
